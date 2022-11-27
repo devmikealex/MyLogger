@@ -2,17 +2,23 @@ const c = require('./colors')
 // const dateFormat = require('date-format')
 
 class Logger {
-    constructor() {
-        this.label = ''
-        this._level = 'silly'
+    /**
+     * Создание логера
+     * @param {string} level Уровень фильтрации
+     * @param {string} label Метка
+     * @param {string} labelColor Цвет метки (ASCII)
+     */
+    constructor(level, label, labelColor) {
+        this.label = label ?? ''
+        this._level = level ?? 'silly'
         this.level = this._level
-        this.labelColor = ''
+        this.labelColor = labelColor ?? ''
         this.messageColor = ''
-        this.timeFormat = 'hh:mm:ss.SSS' // не используется
         this.levelPadEnd = 5
         this.labelPadEnd = 5
+        this.timeFormat = 'hh:mm:ss.SSS' // не используется
         /** @property {object} c - Colors table / ASCII code */
-        this.c = c
+        // this.c = c
 
         Object.keys(LOG_LEVELS_AND_COLORS).forEach((element) => {
             this[element] = function (...messages) {
