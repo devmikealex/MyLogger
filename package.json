@@ -2,7 +2,7 @@
   "name": "mylogger",
   "version": "1.0.0",
   "description": "",
-  "main": "Logger.js",
+  "main": "index.js",
   "scripts": {
     "start": "nodemon --inspect test.js",
     "start2": "nodemon --inspect-brk test.js"
