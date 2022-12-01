@@ -6,7 +6,9 @@ console.log('START')
 // const c = require('./colors-web')
 
 // const Logger = require('./index-web.js')
+
 const log = new WebLogger(null, 'TST', 'green')
+// const log = new WebLogger(null, 'TST')
 
 console.log('Log log')
 console.info('Log info')
@@ -51,9 +53,10 @@ log.lg(
     'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Aperiam atque nisi, facere recusandae distinctio vel, illum suscipit corrupti veritatis maiores libero laborum at dolorum sapiente magnam eligendi explicabo quos corporis?'
 )
 
-log.messageColor = 'SeaGreen'
+log.messageColor = 'SeaGreen-HoneyDew'
 log.log('Log log object', obj)
 log.log('Log log object', obj, 'adasd', obj, arr)
 log.log('Log log object+: ' + obj)
 log.info('Log info array', arr)
+log.messageColor = ''
 log.info('Log info array+: ' + arr)

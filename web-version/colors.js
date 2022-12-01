@@ -1,3 +1,11 @@
+export function colorAndBG(str) {
+    const colors = str.split('-')
+    let styles = ''
+    if (colors[0]) styles = color(colors[0])
+    if (colors[1]) styles += bgcolor(colors[1])
+    return styles
+}
+
 export function color(color) {
     return `color: ${color};`
 }

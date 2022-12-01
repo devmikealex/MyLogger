@@ -1,4 +1,4 @@
-import { colors as c, color, bgcolor } from './colors.js'
+import { colors as c, color, bgcolor, colorAndBG } from './colors.js'
 
 const FONT = 'font-size:14px;'
 
@@ -44,7 +44,8 @@ class WebLogger {
         }
         if (levelIndex <= this._levelIndex) {
             const label = '%c' + this.label.padEnd(this.labelPadEnd, ' ')
-            colorsStyles.push(color(this.labelColor))
+            colorsStyles.push(colorAndBG(this.labelColor))
+            colorsStyles.push('')
 
             colorsStyles.push(c.bold + LOG_LEVELS_AND_COLORS[level] || '')
             const levelString = '%c' + level.padEnd(this.levelPadEnd, ' ')
@@ -54,17 +55,17 @@ class WebLogger {
                 if (element instanceof Object) {
                     addObjInfo.push(element)
                     // return (element = JSON.stringify(element))
-                    return '[OBJ]'
+                    return '[🔻]'
                 }
                 return element
             })
             const message = messages.join(' ')
-            colorsStyles.push(color(this.messageColor))
+            colorsStyles.push(colorAndBG(this.messageColor))
 
             colorsStyles = colorsStyles.map((item) => item + FONT)
 
             if (!browserLogs.includes(level)) level = 'log'
-            console[level](`🟢 ${label} ${levelString}%c ${message}`, ...colorsStyles)
+            console[level](`🟢 ${label}%c ${levelString}%c ${message}`, ...colorsStyles)
 
             if (addObjInfo.length > 0) {
                 addObjInfo.forEach((e) => {
@@ -77,7 +78,8 @@ class WebLogger {
 export default WebLogger
 
 const LOG_LEVELS_AND_COLORS = {
-    error: bgcolor('red') + color('white'),
+    // error: bgcolor('red') + color('white'),
+    error: colorAndBG('white-red'),
     warn: color('red'),
     info: color('rgb(0, 204, 204)'),
     http: color('orange'),
