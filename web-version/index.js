@@ -1,8 +1,10 @@
-import c from './colors-web.js'
+import { colors as c, color, bgcolor } from './colors.js'
+
+const FONT = 'font-size:14px;'
 
 const browserLogs = ['log', 'info', 'warn', 'error', 'debug']
 
-class Logger {
+class WebLogger {
     /**
      * Создание логера
      * @param {string} level Уровень фильтрации
@@ -20,7 +22,7 @@ class Logger {
 
         Object.keys(LOG_LEVELS_AND_COLORS).forEach((element) => {
             this[element] = function (...messages) {
-                this.logPrint(element, ...messages)
+                this.lg(element, ...messages)
             }
         })
     }
@@ -32,7 +34,7 @@ class Logger {
             this._level = Object.keys(LOG_LEVELS_AND_COLORS)[this._levelIndex]
         }
     }
-    logPrint(level, ...messages) {
+    lg(level, ...messages) {
         let colorsStyles = []
         let levelIndex = getIndexOfKeyInObject(LOG_LEVELS_AND_COLORS, level)
         if (levelIndex === -1) {
@@ -42,32 +44,47 @@ class Logger {
         }
         if (levelIndex <= this._levelIndex) {
             const label = '%c' + this.label.padEnd(this.labelPadEnd, ' ')
-            colorsStyles.push(this.labelColor)
+            colorsStyles.push(color(this.labelColor))
 
             colorsStyles.push(c.bold + LOG_LEVELS_AND_COLORS[level] || '')
             const levelString = '%c' + level.padEnd(this.levelPadEnd, ' ')
 
+            const addObjInfo = []
+            messages = messages.map((element) => {
+                if (element instanceof Object) {
+                    addObjInfo.push(element)
+                    // return (element = JSON.stringify(element))
+                    return '[OBJ]'
+                }
+                return element
+            })
             const message = messages.join(' ')
-            colorsStyles.push('')
+            colorsStyles.push(color(this.messageColor))
 
-            colorsStyles = colorsStyles.map((item) => item + 'font-size:14px;')
+            colorsStyles = colorsStyles.map((item) => item + FONT)
 
             if (!browserLogs.includes(level)) level = 'log'
-            console[level](`${label} ${levelString}%c ${message}`, ...colorsStyles)
+            console[level](`🟢 ${label} ${levelString}%c ${message}`, ...colorsStyles)
+
+            if (addObjInfo.length > 0) {
+                addObjInfo.forEach((e) => {
+                    console.debug(e)
+                })
+            }
         }
     }
 }
-export default Logger
+export default WebLogger
 
 const LOG_LEVELS_AND_COLORS = {
-    error: c.bgRed + c.white,
-    warn: c.red,
-    info: c.darkcyan,
-    http: c.orange,
-    log: 'color: rgb(0, 206, 7);',
-    verbs: c.magenta,
-    debug: c.blue,
-    silly: c.dimgray,
+    error: bgcolor('red') + color('white'),
+    warn: color('red'),
+    info: color('rgb(0, 204, 204)'),
+    http: color('orange'),
+    log: color('rgb(0, 206, 7)'),
+    verbs: color('magenta'),
+    debug: color('blue'),
+    silly: color('gainsboro'),
 }
 
 /**

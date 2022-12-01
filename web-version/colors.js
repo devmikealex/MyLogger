@@ -1,4 +1,12 @@
-const colors = {
+export function color(color) {
+    return `color: ${color};`
+}
+
+export function bgcolor(color) {
+    return `background-color: ${color};`
+}
+
+export const colors = {
     reset: '',
 
     bold: 'font-weight:600;',
