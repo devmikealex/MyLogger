@@ -2,6 +2,8 @@ import { colors as c, color, bgcolor, colorAndBG } from './colors.js'
 
 const FONT = 'font-size:14px;'
 
+let LABEL_PADEND = 5
+
 const browserLogs = ['log', 'info', 'warn', 'error', 'debug']
 
 class WebLogger {
@@ -17,8 +19,11 @@ class WebLogger {
         this.level = this._level
         this.labelColor = labelColor ?? ''
         this.messageColor = ''
-        this.levelPadEnd = 5
-        this.labelPadEnd = 5
+        // this.levelPadEnd = 5
+
+        const len = label.length
+        if (len > LABEL_PADEND) LABEL_PADEND = len
+        this.labelPadEnd = LABEL_PADEND
 
         Object.keys(LOG_LEVELS_AND_COLORS).forEach((element) => {
             this[element] = function (...messages) {
@@ -43,7 +48,7 @@ class WebLogger {
             levelIndex = getIndexOfKeyInObject(LOG_LEVELS_AND_COLORS, level)
         }
         if (levelIndex <= this._levelIndex) {
-            const label = '%c' + this.label.padEnd(this.labelPadEnd, ' ')
+            const label = '%c' + this.label.padEnd(LABEL_PADEND, ' ')
             colorsStyles.push(colorAndBG(this.labelColor))
             colorsStyles.push('')
 
@@ -57,7 +62,7 @@ class WebLogger {
                     // return (element = JSON.stringify(element))
                     return '[🔻]'
                 }
-                return element
+                return String(element)
             })
             const message = messages.join(' ')
             colorsStyles.push(colorAndBG(this.messageColor))

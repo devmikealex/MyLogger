@@ -60,3 +60,11 @@ log.log('Log log object+: ' + obj)
 log.info('Log info array', arr)
 log.messageColor = ''
 log.info('Log info array+: ' + arr)
+
+log.messageColor = 'red'
+let a
+const NULL = null
+log.debug(a)
+log.debug('asdasd', a)
+log.info(NULL)
+log.info('fjgf', NULL)
