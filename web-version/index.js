@@ -60,7 +60,7 @@ class WebLogger {
                 if (element instanceof Object) {
                     addObjInfo.push(element)
                     // return (element = JSON.stringify(element))
-                    return '[🔻]'
+                    return '🔻'
                 }
                 return String(element)
             })
@@ -70,13 +70,18 @@ class WebLogger {
             colorsStyles = colorsStyles.map((item) => item + FONT)
 
             if (!browserLogs.includes(level)) level = 'log'
-            console[level](`🟢 ${label}%c ${levelString}%c ${message}`, ...colorsStyles)
+            // console[level](`🟢 ${label}%c ${levelString}%c ${message}`, ...colorsStyles)
+            console[level](
+                `🟢 ${label}%c ${levelString}%c ${message}`,
+                ...colorsStyles,
+                ...addObjInfo
+            )
 
-            if (addObjInfo.length > 0) {
-                addObjInfo.forEach((e) => {
-                    console.debug(e)
-                })
-            }
+            // if (addObjInfo.length > 0) {
+            //     addObjInfo.forEach((e) => {
+            //         console.debug(e)
+            //     })
+            // }
         }
     }
 }
