@@ -2,6 +2,8 @@ const util = require('util')
 
 const c = require('./colors')
 
+let LABEL_PADEND = 5
+
 // const dateFormat = require('date-format')
 
 class Logger {
@@ -18,10 +20,14 @@ class Logger {
         this.labelColor = labelColor ?? ''
         this.messageColor = ''
         this.levelPadEnd = 5
-        this.labelPadEnd = 5
+        // this.labelPadEnd = 5
         this.timeFormat = 'hh:mm:ss.SSS' // не используется
         /** @property {object} c - Colors table / ASCII code */
         // this.c = c
+
+        const len = label.length
+        if (len > LABEL_PADEND) LABEL_PADEND = len
+        this.labelPadEnd = LABEL_PADEND
 
         Object.keys(LOG_LEVELS_AND_COLORS).forEach((element) => {
             this[element] = function (...messages) {
@@ -50,12 +56,16 @@ class Logger {
             const timeString = `${time.toTimeString().slice(0, 8)}.${String(
                 time.getMilliseconds()
             ).padStart(3, '0')}`
-            level = (LOG_LEVELS_AND_COLORS[level] || '') + level.padEnd(this.levelPadEnd, ' ') + c.reset
-            const label = this.labelColor + this.label.padEnd(this.labelPadEnd, ' ') + c.reset
-            
-            messages = messages.map(element => {
-                if (element instanceof Object) return element = util.inspect(element)
-                else return element
+            level =
+                (LOG_LEVELS_AND_COLORS[level] || '') +
+                level.padEnd(this.levelPadEnd, ' ') +
+                c.reset
+            const label = this.labelColor + this.label.padEnd(LABEL_PADEND, ' ') + c.reset
+
+            messages = messages.map((element) => {
+                if (element instanceof Object) {
+                    return util.inspect(element)
+                } else return element
             })
 
             const message = this.messageColor + messages.join(' ') + c.reset
